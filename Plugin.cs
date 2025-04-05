@@ -13,18 +13,18 @@ namespace Scheduled;
 public class Plugin : BaseUnityPlugin
 {
 	// Plugin Info
-	public const string PLUGIN_GUID = "io.github.stupidrepo.Scheduled";
-	public const string VERSION = "1.0.0";
+	internal const string PLUGIN_GUID = "io.github.stupidrepo.Scheduled";
+	internal const string VERSION = "1.0.0";
 	
 	// Shared Logger
 	internal new static ManualLogSource Logger;
 	
 	// InputActions
-	private InputAction testAction;
+	// private InputAction testAction;
 	
 	private void Awake()
 	{
-		testAction = new InputAction("MyAction", InputActionType.Button, "<Keyboard>/space");
+		// testAction = new InputAction("MyAction", InputActionType.Button, "<Keyboard>/space");
 		Logger = base.Logger;
 		
 		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());

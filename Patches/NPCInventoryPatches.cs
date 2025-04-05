@@ -17,7 +17,7 @@ public class NPCInventoryPatches
 		__result = __instance.CanBePickpocketed && 
 		           PlayerSingleton<PlayerMovement>.Instance.isCrouched 
 		           && Player.Local.CrimeData.CurrentPursuitLevel == PlayerCrimeData.EPursuitLevel.None 
-		           && Time.time - __instance.timeOnLastExpire >= (__instance.npc.Health.IsDead ? .5f : 30f)
+		           && Time.time - __instance.timeOnLastExpire >= (!__instance.npc.IsConscious ? .5f : 30f)
 		           && !__instance.npc.Health.IsDead
 		           && !__instance.npc.behaviour.CallPoliceBehaviour.Active 
 		           && !__instance.npc.behaviour.CombatBehaviour.Active 
