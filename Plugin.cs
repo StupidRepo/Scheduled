@@ -2,6 +2,7 @@
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using Discord.Sdk;
 using HarmonyLib;
 using Steamworks;
 using UnityEngine;
@@ -26,11 +27,10 @@ public class Plugin : BaseUnityPlugin
 	{
 		// testAction = new InputAction("MyAction", InputActionType.Button, "<Keyboard>/space");
 		Logger = base.Logger;
-		
+
 		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 		Logger.LogInfo($"Plugin {PLUGIN_GUID} is loaded!");
 	}
-
 	private void Start()
 	{
 		StartCoroutine(SetGameModeOnInit());
