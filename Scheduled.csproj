@@ -16,6 +16,7 @@
 
     <ItemGroup>
         <Reference Include="$(S1Dir)\Schedule I_Data\Managed\*.dll" Exclude="$(S1Dir)\Schedule I_Data\Managed\System*.dll" Private="false" Publicize="True" />
+        <Reference Include="./Libs/Discord.Sdk.dll" Private="false" />
     </ItemGroup>
 
     <!-- Use BepInEx's Assembly Publicizer to tell IDEs and the compiler that every field, method, etc. is public, in the game assemblies -->
@@ -26,17 +27,19 @@
         </PackageReference>
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />
+        <PackageReference Include="Costura.Fody" Version="6.0.0">
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
+        <PackageReference Include="Fody" Version="6.9.2">
+          <PrivateAssets>all</PrivateAssets>
+        </PackageReference>
         <PackageReference Include="HarmonyX" Version="2.14.0" />
-        <PackageReference Include="ILRepack.MSBuild.Task" Version="2.0.13" />
         <PackageReference Include="MonoMod.Backports" Version="1.1.2" />
         <PackageReference Include="MonoMod.ILHelpers" Version="1.1.0" />
-        <PackageReference Include="SteamworksSharp" Version="1.0.8" />
     </ItemGroup>
     
     <Target Name="CopyOutputFileToGame" AfterTargets="Build">
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(S1Dir)\BepInEx\plugins\" Retries="60"/>
-        <Copy SourceFiles="$(OutputPath)\MonoMod.Backports.dll" DestinationFolder="$(S1Dir)\BepInEx\plugins\" Retries="60"/>
-        <Copy SourceFiles="$(OutputPath)\MonoMod.ILHelpers.dll" DestinationFolder="$(S1Dir)\BepInEx\plugins\" Retries="60"/>
-    </Target>
+    </Target>   
 
 </Project>
