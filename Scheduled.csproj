@@ -16,14 +16,13 @@
 
     <ItemGroup>
         <Reference Include="$(S1Dir)\Schedule I_Data\Managed\*.dll" Exclude="$(S1Dir)\Schedule I_Data\Managed\System*.dll" Private="false" Publicize="True" />
-        <Reference Include="./Libs/Discord.Sdk.dll" Private="false" />
+        <Reference Include="./Libs/Discord/Discord.Sdk.dll" Private="false" />
     </ItemGroup>
 
     <!-- Use BepInEx's Assembly Publicizer to tell IDEs and the compiler that every field, method, etc. is public, in the game assemblies -->
     <ItemGroup>
         <PackageReference Include="BepInEx.AssemblyPublicizer.MSBuild" Version="0.5.0-beta.1">
             <PrivateAssets>all</PrivateAssets>
-            <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
         </PackageReference>
         <PackageReference Include="BepInEx.Analyzers" Version="1.*" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="5.*" />

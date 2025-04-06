@@ -4,6 +4,7 @@
     <IncludeAssemblies>
 			MonoMod.Backports
 			MonoMod.ILHelpers
+	        Discord.Sdk
 		</IncludeAssemblies>
   </Costura>
 </Weavers>

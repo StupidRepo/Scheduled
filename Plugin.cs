@@ -2,10 +2,10 @@
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using Discord.Sdk;
 using HarmonyLib;
-using Scheduled.Commands;
 using Steamworks;
-using Console = ScheduleOne.Console;
+using UnityEngine;
 
 namespace Scheduled;
 
@@ -19,6 +19,9 @@ public class Plugin : BaseUnityPlugin
 	// Shared Logger
 	internal new static ManualLogSource Logger;
 	
+	// Discord SDK
+	internal static DiscordManager DiscordManager;
+	
 	// InputActions
 	// private InputAction testAction;
 	
@@ -28,11 +31,26 @@ public class Plugin : BaseUnityPlugin
 		Logger = base.Logger;
 		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 		
+		// Init discord SDK
+		DiscordManager = new DiscordManager();
+		DiscordManager.OnReady += client =>
+		{
+			var activity = new Activity();
+			activity.SetType(ActivityTypes.Playing);
+			activity.SetState("🌿🚬");
+			
+			client.UpdateRichPresence(activity, result => {
+				if (!result.Successful())
+					Logger.LogError("Failed to update Discord Rich Presence: " + result.Error());
+			});
+		};
+
 		Logger.LogInfo($"Plugin {PLUGIN_GUID} is loaded!");
 	}
 	private void Start()
 	{
 		StartCoroutine(OnSteamInit());
+		DiscordManager.StartOAuthFlow();
 	}
 
 	private IEnumerator OnSteamInit()
