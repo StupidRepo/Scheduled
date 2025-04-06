@@ -36,6 +36,9 @@
         <PackageReference Include="MonoMod.Backports" Version="1.1.2" />
         <PackageReference Include="MonoMod.ILHelpers" Version="1.1.0" />
     </ItemGroup>
+    <ItemGroup>
+      <Folder Include="Libs\" />
+    </ItemGroup>
     
     <Target Name="CopyOutputFileToGame" AfterTargets="Build">
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(S1Dir)\BepInEx\plugins\" Retries="60"/>
