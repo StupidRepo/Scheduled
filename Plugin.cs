@@ -2,11 +2,10 @@
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
-using Discord.Sdk;
 using HarmonyLib;
+using Scheduled.Commands;
 using Steamworks;
-using UnityEngine;
-using UnityEngine.InputSystem;
+using Console = ScheduleOne.Console;
 
 namespace Scheduled;
 
@@ -27,21 +26,18 @@ public class Plugin : BaseUnityPlugin
 	{
 		// testAction = new InputAction("MyAction", InputActionType.Button, "<Keyboard>/space");
 		Logger = base.Logger;
-
 		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
+		
 		Logger.LogInfo($"Plugin {PLUGIN_GUID} is loaded!");
 	}
 	private void Start()
 	{
-		StartCoroutine(SetGameModeOnInit());
+		StartCoroutine(OnSteamInit());
 	}
 
-	private IEnumerator SetGameModeOnInit()
+	private IEnumerator OnSteamInit()
 	{
-		while (!SteamManager.Initialized)
-		{
-			yield return null;
-		}
+		while (!SteamManager.Initialized) { yield return null; }
 
 		Logger.LogInfo("Steamworks is initialized, setting status to PLAYING!");
 		SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Playing);
