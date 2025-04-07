@@ -3,6 +3,7 @@ using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
 using HarmonyLib;
+using Scheduled.Managers;
 using Steamworks;
 
 namespace Scheduled;
@@ -17,15 +18,18 @@ public class Plugin : BaseUnityPlugin
 	// Shared Logger
 	internal new static ManualLogSource Logger;
 	
-	// InputActions
-	// private InputAction testAction;
+	// Discord Game SDK
+	internal static DiscordManager DiscordManager;
 	
 	private void Awake()
 	{
 		// testAction = new InputAction("MyAction", InputActionType.Button, "<Keyboard>/space");
+		DiscordManager = new DiscordManager();
+		
 		Logger = base.Logger;
 		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 		
+		SteamClient.Init(3164500);
 		Logger.LogInfo($"Plugin {PLUGIN_GUID} is loaded!");
 	}
 	private void Start()
@@ -33,11 +37,16 @@ public class Plugin : BaseUnityPlugin
 		StartCoroutine(OnSteamInit());
 	}
 
+	private void OnApplicationQuit()
+	{
+		SteamClient.Shutdown();
+	}
+
 	private IEnumerator OnSteamInit()
 	{
-		while (!SteamManager.Initialized) { yield return null; }
+		while (!SteamClient.IsValid) { yield return null; }
 
 		Logger.LogInfo("Steamworks is initialized, setting status to PLAYING!");
-		SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Playing);
+		SteamTimeline.SetTimelineGameMode(TimelineGameMode.Playing);
 	}
 }

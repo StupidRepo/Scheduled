@@ -2,7 +2,6 @@ using HarmonyLib;
 using ScheduleOne.DevUtilities;
 using ScheduleOne.NPCs;
 using ScheduleOne.PlayerScripts;
-using Steamworks;
 using UnityEngine;
 
 namespace Scheduled.Patches;

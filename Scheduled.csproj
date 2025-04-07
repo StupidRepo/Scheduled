@@ -15,8 +15,8 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="$(S1Dir)\Schedule I_Data\Managed\*.dll" Exclude="$(S1Dir)\Schedule I_Data\Managed\System*.dll" Private="false" Publicize="True" />
-        <Reference Include="./Libs/Discord/Discord.Sdk.dll" Private="false" />
+        <Reference Include="$(S1Dir)\Schedule I_Data\Managed\*.dll" Exclude="$(S1Dir)\Schedule I_Data\Managed\System*.dll;$(S1Dir)\Schedule I_Data\Managed\com.rlab*.dll" Private="false" Publicize="True" />
+        <Reference Include="./Libs/Facepunch.Steamworks/Facepunch.Steamworks.Win64.dll" Private="false" />
     </ItemGroup>
 
     <!-- Use BepInEx's Assembly Publicizer to tell IDEs and the compiler that every field, method, etc. is public, in the game assemblies -->

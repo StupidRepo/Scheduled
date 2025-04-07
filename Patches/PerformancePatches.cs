@@ -1,6 +1,4 @@
 ﻿using HarmonyLib;
-using Scheduled.Commands;
-using Console = ScheduleOne.Console;
 
 namespace Scheduled.Patches;
 
