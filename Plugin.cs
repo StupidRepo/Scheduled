@@ -2,9 +2,11 @@
 using System.Reflection;
 using BepInEx;
 using BepInEx.Logging;
+using Discord;
 using HarmonyLib;
 using Scheduled.Managers;
 using Steamworks;
+using Result = Discord.Result;
 
 namespace Scheduled;
 
@@ -20,6 +22,7 @@ public class Plugin : BaseUnityPlugin
 	
 	// Discord Game SDK
 	internal static DiscordManager DiscordManager;
+	internal static Discord.Discord Discord => DiscordManager.Discord;
 	
 	private void Awake()
 	{
@@ -35,6 +38,28 @@ public class Plugin : BaseUnityPlugin
 	private void Start()
 	{
 		StartCoroutine(OnSteamInit());
+		var activityManager = Discord.GetActivityManager();
+		var activity = new Activity
+		{
+			State = DiscordManager.STATE,
+			Details = "🌿🚬",
+			Timestamps =
+			{
+				Start = DateTimeOffset.UtcNow.ToUnixTimeSeconds()
+			}
+		};
+		
+		activityManager.UpdateActivity(activity, result =>
+		{
+			Logger.LogInfo(result == Result.Ok
+				? "Activity updated successfully."
+				: $"Failed to update activity: {result}");
+		});
+	}
+	
+	private void Update()
+	{
+		Discord.RunCallbacks();
 	}
 
 	private void OnApplicationQuit()
