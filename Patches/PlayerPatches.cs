@@ -12,13 +12,14 @@ public class PlayerPatches
 	public static void OnDiedPostfix(Player __instance)
 	{
 		if (!__instance.Owner.IsLocalClient) return;
-		SteamTimeline.AddInstantaneousTimelineEvent(
+		SteamTimeline.AddTimelineEvent(
+			"steam_death",
 			"Died",
 			"You died!",
-			"steam_death",
 			2,
 			0,
-			TimelineEventClipPriority.Featured
+			0,
+			ETimelineEventClipPriority.k_ETimelineEventClipPriority_Featured
 		);
 	}
 }

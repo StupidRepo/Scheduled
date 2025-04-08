@@ -15,8 +15,7 @@
     </PropertyGroup>
 
     <ItemGroup>
-        <Reference Include="$(S1Dir)\Schedule I_Data\Managed\*.dll" Exclude="$(S1Dir)\Schedule I_Data\Managed\System*.dll;$(S1Dir)\Schedule I_Data\Managed\com.rlab*.dll" Private="false" Publicize="True" />
-        <Reference Include="./Libs/Facepunch.Steamworks/Facepunch.Steamworks.Win64.dll" Private="false" />
+        <Reference Include="$(S1Dir)\Schedule I_Data\Managed\*.dll" Exclude="$(S1Dir)\Schedule I_Data\Managed\System*.dll" Private="false" Publicize="True" />
     </ItemGroup>
 
     <!-- Use BepInEx's Assembly Publicizer to tell IDEs and the compiler that every field, method, etc. is public, in the game assemblies -->
@@ -35,6 +34,7 @@
         <PackageReference Include="HarmonyX" Version="2.14.0" />
         <PackageReference Include="MonoMod.Backports" Version="1.1.2" />
         <PackageReference Include="MonoMod.ILHelpers" Version="1.1.0" />
+        <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="22.7.31.1" />
     </ItemGroup>
     <ItemGroup>
       <Folder Include="Libs\" />

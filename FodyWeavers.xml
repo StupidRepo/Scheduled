@@ -4,7 +4,6 @@
 		<IncludeAssemblies>
 			MonoMod.Backports
 			MonoMod.ILHelpers
-			Facepunch.Steamworks.Win64
 		</IncludeAssemblies>
 	</Costura>
 </Weavers>
