@@ -1,35 +1,52 @@
-﻿using HarmonyLib;
+﻿using FishNet.Managing.Logging;
+using HarmonyLib;
 
 namespace Scheduled.Patches;
 
-[HarmonyPatch(typeof(UnityEngine.Debug))]
+
 public class PerformancePatches
 {
-    [HarmonyPatch(nameof(UnityEngine.Debug.LogWarning), typeof(object), typeof(UnityEngine.Object))]
-    [HarmonyPrefix]
-    public static bool LogWarning(object message, UnityEngine.Object context)
+    [HarmonyPatch(typeof(UnityEngine.Debug))]
+    public class UnitySh_t
     {
-        return false; // stop spamming the console with warnings
+        [HarmonyPatch(nameof(UnityEngine.Debug.LogWarning), typeof(object), typeof(UnityEngine.Object))]
+        [HarmonyPrefix]
+        public static bool LogWarning(object message, UnityEngine.Object context)
+        {
+            return false; // stop spamming the console with warnings
+        }
+
+        [HarmonyPatch(nameof(UnityEngine.Debug.LogError), typeof(object), typeof(UnityEngine.Object))]
+        [HarmonyPrefix]
+        public static bool LogError(object message, UnityEngine.Object context)
+        {
+            return false; // stop spamming the console with errors
+        }
+
+        [HarmonyPatch(nameof(UnityEngine.Debug.LogWarning), typeof(object), typeof(UnityEngine.Object))]
+        [HarmonyPrefix]
+        public static bool LogWarning(object message)
+        {
+            return false; // stop spamming the console with warnings
+        }
+
+        [HarmonyPatch(nameof(UnityEngine.Debug.LogError), typeof(object), typeof(UnityEngine.Object))]
+        [HarmonyPrefix]
+        public static bool LogError(object message)
+        {
+            return false; // stop spamming the console with errors
+        }
     }
     
-    [HarmonyPatch(nameof(UnityEngine.Debug.LogError), typeof(object), typeof(UnityEngine.Object))]
-    [HarmonyPrefix]
-    public static bool LogError(object message, UnityEngine.Object context)
+    [HarmonyPatch(typeof(LevelLoggingConfiguration))]
+    public class FishNetSh_t // f*ck you, fishnet devs. fix your docs, you numbnuts.
     {
-        return false; // stop spamming the console with errors
-    }
-    
-    [HarmonyPatch(nameof(UnityEngine.Debug.LogWarning), typeof(object), typeof(UnityEngine.Object))]
-    [HarmonyPrefix]
-    public static bool LogWarning(object message)
-    {
-        return false; // stop spamming the console with warnings
-    }
-    
-    [HarmonyPatch(nameof(UnityEngine.Debug.LogError), typeof(object), typeof(UnityEngine.Object))]
-    [HarmonyPrefix]
-    public static bool LogError(object message)
-    {
-        return false; // stop spamming the console with errors
+        [HarmonyPatch(nameof(LevelLoggingConfiguration.CanLog))]
+        [HarmonyPrefix]
+        public static bool TurnOffLoggingF_ckOffFishNetGivingMe600MBLogsYouF_cker(ref bool __result)
+        {
+            __result = false;
+            return false;
+        }
     }
 }
