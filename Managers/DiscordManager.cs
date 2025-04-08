@@ -14,7 +14,7 @@ public class DiscordManager
 	public const long CLIENT_ID = 1358163596479303941;
 	public const string STATE = "Playing Schedule I";
 	
-	public readonly Discord.Discord Discord;
+	public readonly Discord.Discord? Discord;
 	public readonly ActivityManager ActivityManager;
 	
 	private readonly ManualLogSource logger = Logger.CreateLogSource("Discord Game SDK");
@@ -68,10 +68,9 @@ public class DiscordManager
 				MaxSize = lobby.MaxPlayers
 			}
 		};
-		activity.Secrets = new ActivitySecrets
-		{
-			Join = lobbyId
-		};
+		
+		if(Plugin.Config.AllowInvites.Value)
+			activity.Secrets = new ActivitySecrets { Join = lobbyId };
 		
 		UpdateActivity(activity);
 	}

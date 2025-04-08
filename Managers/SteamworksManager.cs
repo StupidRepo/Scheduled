@@ -9,11 +9,7 @@ namespace Scheduled.Managers;
 
 public class SteamworksManager
 {
-	private readonly ManualLogSource logger = Logger.CreateLogSource("Brad's Steamworks Manager");
-	
-	// callbacks
-	private Callback<LobbyEnter_t> _lobbyEnteredCallback;
-	private Callback<LobbyChatUpdate_t> _lobbyChatUpdateCallback;
+	private readonly ManualLogSource logger = Logger.CreateLogSource("Steamworks Manager");
 	
 	public SteamworksManager()
 	{
@@ -24,8 +20,8 @@ public class SteamworksManager
 		
 		logger.LogInfo("SteamAPI initialized successfully.");
 		
-		_lobbyEnteredCallback = Callback<LobbyEnter_t>.Create(OnLobbyEntered);
-		_lobbyChatUpdateCallback = Callback<LobbyChatUpdate_t>.Create(OnMemberChanged);
+		Callback<LobbyEnter_t>.Create(OnLobbyEntered);
+		Callback<LobbyChatUpdate_t>.Create(OnMemberChanged);
 		
 		new Hook(
 			typeof(Lobby).GetMethod(nameof(Lobby.LeaveLobby))!, 
@@ -33,8 +29,8 @@ public class SteamworksManager
 			{
 				orig(self);
 				
-				logger.LogInfo("Updating activity!");
-				Plugin.DiscordManager.UpdateLobbyActivity(null);
+				logger.LogDebug("Updating activity!");
+				Plugin.DiscordManager?.UpdateLobbyActivity(null);
 			}
 		).Apply();
 	}
@@ -49,7 +45,7 @@ public class SteamworksManager
 		}
 		
 		var lobby = new SteamLobby(callback.m_ulSteamIDLobby);
-		Plugin.DiscordManager.UpdateLobbyActivity(lobby);
+		Plugin.DiscordManager?.UpdateLobbyActivity(lobby);
 	}
 	
 	private void OnMemberChanged(LobbyChatUpdate_t callback)
@@ -57,7 +53,7 @@ public class SteamworksManager
 		if (callback.m_ulSteamIDLobby == 0)
 		{
 			logger.LogError("Lobby ID is 0.");
-			Plugin.DiscordManager.UpdateLobbyActivity(null);
+			Plugin.DiscordManager?.UpdateLobbyActivity(null);
 			return;
 		}
 
@@ -65,12 +61,12 @@ public class SteamworksManager
 		if (callback.m_rgfChatMemberStateChange == (ulong)EChatMemberStateChange.k_EChatMemberStateChangeEntered)
 		{
 			logger.LogInfo($"{callback.m_ulSteamIDUserChanged} joined the lobby.");
-			Plugin.DiscordManager.UpdateLobbyActivity(lobby);
+			Plugin.DiscordManager?.UpdateLobbyActivity(lobby);
 		}
 		else if (callback.m_rgfChatMemberStateChange == (ulong)EChatMemberStateChange.k_EChatMemberStateChangeLeft)
 		{
 			logger.LogInfo($"{callback.m_ulSteamIDUserChanged} left the lobby.");
-			Plugin.DiscordManager.UpdateLobbyActivity(lobby);
+			Plugin.DiscordManager?.UpdateLobbyActivity(lobby);
 		}
 		else
 		{

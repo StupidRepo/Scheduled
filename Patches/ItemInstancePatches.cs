@@ -10,7 +10,6 @@ public class ItemInstancePatches
     [HarmonyPostfix]
     public static void StackLimitOverride(ItemInstance __instance, ref int __result)
     {
-        Plugin.Logger.LogError("Original stack limit for " + __instance.Name + ": " + __result);
-        __result *= 4;
+        __result *= Math.Min(Plugin.Config.StackSizeMultiplier.Value, 1);
     }
 }

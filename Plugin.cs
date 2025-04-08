@@ -6,7 +6,9 @@ using Discord;
 using HarmonyLib;
 using Scheduled.Managers;
 using ScheduleOne.Persistence;
+using ScheduleOne.UI;
 using Steamworks;
+using UnityEngine;
 using UnityEngine.SceneManagement;
 
 namespace Scheduled;
@@ -18,12 +20,13 @@ public class Plugin : BaseUnityPlugin
 	internal const string PLUGIN_GUID = "io.github.stupidrepo.Scheduled";
 	internal const string VERSION = "1.0.0";
 	
-	// Shared Logger
+	// Shared Stuff
 	internal new static ManualLogSource Logger;
+	internal new static ScheduledConfig Config;
 	
 	// Discord Game SDK
-	internal static DiscordManager DiscordManager;
-	internal static Discord.Discord Discord => DiscordManager.Discord;
+	internal static DiscordManager? DiscordManager;
+	internal static Discord.Discord? Discord => DiscordManager?.Discord;
 	
 	// Steamworks
 	internal static SteamworksManager SteamworksManager;
@@ -44,11 +47,13 @@ public class Plugin : BaseUnityPlugin
 	private void Awake()
 	{
 		// set Logger and do patching
+		Config = new ScheduledConfig(base.Config);
 		Logger = base.Logger;
 		Harmony.CreateAndPatchAll(Assembly.GetExecutingAssembly());
 		
 		// init external stuff
-		DiscordManager = new DiscordManager();
+		if(Config.InteractWithDiscord.Value)
+			DiscordManager = new DiscordManager();
 		SteamworksManager = new SteamworksManager();
 		
 		// scene change stuff
@@ -65,12 +70,12 @@ public class Plugin : BaseUnityPlugin
 	private void Start()
 	{
 		StartCoroutine(OnSteamInit());
-		DiscordManager.UpdateActivity(DEFAULT_ACTIVITY);
+		DiscordManager?.UpdateActivity(DEFAULT_ACTIVITY);
 	}
 
 	private void Update()
 	{
-		Discord.RunCallbacks();
+		Discord?.RunCallbacks();
 	}
 
 	private void OnApplicationQuit() => SteamAPI.Shutdown();
@@ -80,7 +85,6 @@ public class Plugin : BaseUnityPlugin
 		while (!SteamManager.Initialized) { yield return null; }
 		
 		Logger.LogInfo("Steamworks is initialized!");
-		
 		SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Menus);
 		if (LoadManager.Instance is not null)
 		{
