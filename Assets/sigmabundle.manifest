@@ -1,0 +1,123 @@
+ManifestFileVersion: 0
+CRC: 2883269094
+Hashes:
+  AssetFileHash:
+    serializedVersion: 2
+    Hash: 6381a2ab0c1273228b3641b447ab9adb
+  TypeTreeHash:
+    serializedVersion: 2
+    Hash: 5278a19b0df9f2f045607bec3b57af30
+  IncrementalBuildHash:
+    serializedVersion: 2
+    Hash: 6381a2ab0c1273228b3641b447ab9adb
+HashAppended: 0
+ClassTypes:
+- Class: 1
+  Script: {instanceID: 0}
+- Class: 4
+  Script: {instanceID: 0}
+- Class: 21
+  Script: {instanceID: 0}
+- Class: 23
+  Script: {instanceID: 0}
+- Class: 28
+  Script: {instanceID: 0}
+- Class: 33
+  Script: {instanceID: 0}
+- Class: 43
+  Script: {instanceID: 0}
+- Class: 48
+  Script: {instanceID: 0}
+- Class: 54
+  Script: {instanceID: 0}
+- Class: 65
+  Script: {instanceID: 0}
+- Class: 74
+  Script: {instanceID: 0}
+- Class: 82
+  Script: {instanceID: 0}
+- Class: 111
+  Script: {instanceID: 0}
+- Class: 114
+  Script: {fileID: 1201363339, guid: d5cbdf9fc658e49428206c7030dbed66, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 129a44f11fb3af427f4951196a60800a, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 4b29cc05172b50924c9876b15d31fb17, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3c4a13c7737826b308c5629ab699a602, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e2da7b8748ed837b888e18707bea8f44, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b9596563e8b07f0e8f194f189ac2ef84, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 9cfdf91fae1cbf2d0c93852ded705590, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 3626ed3f4aa3d4c15d8da87fa829142c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: e76842231bc1bc318c814c3c3181957c, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 032d0b58230633efb8de577d6e5187b9, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 8320d397c9444af2f40008881d6ff036, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 1a499e6aafd727695d5408ac9bc8cfa1, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 55abc096e62c4f8de88dd90b738125ea, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: b15185ba64b1a1bb013f8562c4bb29ba, type: 3}
+- Class: 114
+  Script: {fileID: -1946227806, guid: d2e1e0a586883674d99a93f8fc5352f3, type: 3}
+- Class: 114
+  Script: {fileID: -2018870536, guid: d2e1e0a586883674d99a93f8fc5352f3, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: 385b555db7b898b7479e23a1cdd58eb6, type: 3}
+- Class: 114
+  Script: {fileID: 11500000, guid: fd85ab0b7717004f3cb2f68a58d44d28, type: 3}
+- Class: 115
+  Script: {instanceID: 0}
+- Class: 135
+  Script: {instanceID: 0}
+- Class: 136
+  Script: {instanceID: 0}
+- Class: 137
+  Script: {instanceID: 0}
+- Class: 205
+  Script: {instanceID: 0}
+- Class: 213
+  Script: {instanceID: 0}
+SerializeReferenceClassIdentifiers:
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.Levelling.FullRank
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.Packaging.FilledPackagingVisuals/CocaineVisuals
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.Packaging.FilledPackagingVisuals/MeshIndexPair
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.Packaging.FilledPackagingVisuals/MethVisuals
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.Packaging.FilledPackagingVisuals/WeedVisuals
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.Storage.CoordinateStorageFootprintTilePair
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.Tiles.Coordinate
+- AssemblyName: Assembly-CSharp
+  ClassName: ScheduleOne.UI.Shop.ShopListing/CategoryInstance
+- AssemblyName: FishNet.Runtime
+  ClassName: FishNet.Object.TransformProperties
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.PersistentCallGroup
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.UnityEvent
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.UnityEvent`1[UnityEngine.Collider]
+- AssemblyName: UnityEngine.CoreModule
+  ClassName: UnityEngine.Events.UnityEvent`1[UnityEngine.RaycastHit]
+Assets:
+- Assets/Custom/Items/Box/BoxDef.asset
+- Assets/Custom/Items/Box/Box_Eq.prefab
+- Assets/Custom/Items/Box/CoolJar.asset
+- Assets/Custom/Items/Box/Box_Func.prefab
+- Assets/Custom/Items/Box/Box_AvEq.prefab
+- Assets/Custom/NOs/VoiceChatManager.prefab
+Dependencies: []

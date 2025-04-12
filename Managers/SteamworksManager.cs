@@ -1,7 +1,6 @@
 ﻿using BepInEx.Logging;
 using MonoMod.RuntimeDetour;
 using ScheduleOne.Networking;
-using ScheduleOne.Product;
 using Steamworks;
 using Logger = BepInEx.Logging.Logger;
 

@@ -2,7 +2,6 @@ using BepInEx.Configuration;
 using BepInEx.Logging;
 using Scheduled.Managers;
 using ScheduleOne.Networking;
-using ScheduleOne.UI;
 
 namespace Scheduled;
 
@@ -14,6 +13,7 @@ internal class ScheduledConfig
 	// Discord
 	internal ConfigEntry<bool> InteractWithDiscord;
 	internal ConfigEntry<bool> AllowInvites;
+	internal ConfigEntry<bool> ShowPublicWarning;
 	
 	// Tweaks
 	internal ConfigEntry<int> StackSizeMultiplier;
@@ -45,6 +45,12 @@ internal class ScheduledConfig
 			nameof(AllowInvites), 
 			true,
 			"Whether or not to enable invite support."
+		);
+		ShowPublicWarning = config.Bind(
+			GetName(Sections.Discord),
+			nameof(ShowPublicWarning), 
+			true,
+			"Whether or not to show a warning for game invites making lobbies public."
 		);
 
 		// Tweaks

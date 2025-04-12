@@ -13,7 +13,11 @@ public class ConsolePatches
     {
         Plugin.Logger.LogInfo("Adding custom commands!");
         
+        // Other
         Console.commands.Add("suicide", new SuicideCommand());
-        Console.commands.Add("forcesleep", new ForceSleepCommand());
+        
+        // Ragdoll
+        Console.commands.Add("ragdoll", new RagdollCommand());
+        Console.commands.Add("unragdoll", new UnragdollCommand());
     }
 }
