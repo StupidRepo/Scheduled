@@ -60,20 +60,14 @@ public class GameServerManager
 		
 		if (!Directory.Exists(installDir))
 		{
-			logger.LogError($"Install directory does not exist: {installDir}");
-			return;
+			return; // could be a lil pirate, let's block 'em hehe
 		}
-		// if(!Directory.Exists($"{installDir}/server"))
-		// {
-		// 	logger.LogWarning($"Server directory does not exist: {installDir}/server, making it now!");
-		// 	Directory.CreateDirectory($"{installDir}/server");
-		// }
 		
 		SteamGameServer.SetProduct("Schedule I");
 		SteamGameServer.SetGameDescription("Schedule I");
 		
 		SteamGameServer.SetModDir(
-			"s1dedicatedserver"
+			"s1_dedicated_server"
 		);
 		
 		logger.LogInfo($"Logging in to Steam Game Server...");
