@@ -19,15 +19,16 @@ internal class ScheduledConfig
 	internal ConfigEntry<int> StackSizeMultiplier;
 	internal ConfigEntry<bool> ImprovePerformance;
 	
+	// Steam Game Server
+	internal ConfigEntry<bool> DedicatedServerMode;
+	internal ConfigEntry<string> ServerLoginToken;
+	
+	internal ConfigEntry<string> ServerName;
+	internal ConfigEntry<int> MaxPlayers;
+	
 	internal ScheduledConfig(ConfigFile config)
 	{
 		this.config = config;
-		
-		config.ConfigReloaded += (_, _) =>
-		{
-			logger.LogInfo("🔃 Reloading config...");
-			LoadValues();
-		};
 		LoadValues();
 	}
 
@@ -52,6 +53,8 @@ internal class ScheduledConfig
 			true,
 			"Whether or not to show a warning for game invites making lobbies public."
 		);
+		if(InteractWithDiscord.Value == false)
+			AllowInvites.Value = false;
 
 		// Tweaks
 		StackSizeMultiplier = config.Bind(
@@ -67,16 +70,35 @@ internal class ScheduledConfig
 			"Improves performance by disabling mass logging of FishNet. " +
 			"It's recommended to keep this on, especially when making bug reports that require your Player.log file."
 		);
-
-		if (AllowInvites.Value && InteractWithDiscord.Value && Lobby.InstanceExists)
-		{
-			logger.LogInfo("🕹️ Updating Discord activity, due to config reload...");
-			Plugin.DiscordManager?.UpdateLobbyActivity(new SteamLobby(Lobby.Instance.LobbyID));
-		}
-		else if (!AllowInvites.Value || !InteractWithDiscord.Value)
-		{
-			Plugin.DiscordManager?.UpdateLobbyActivity(null);
-		}
+		
+		// Steam Game Server
+		DedicatedServerMode = config.Bind(
+			GetName(Sections.SteamGameServer),
+			nameof(DedicatedServerMode), 
+			false,
+			"Whether or not to run the game as a dedicated server."
+		);
+		ServerLoginToken = config.Bind(
+			GetName(Sections.SteamGameServer),
+			nameof(ServerLoginToken), 
+			string.Empty,
+			"Login token for the dedicated server." +
+			"Open this link in your browser to create a token (will open in Steam app): steam://openurl/https://steamcommunity.com/dev/managegameservers"
+		);
+		
+		ServerName = config.Bind(
+			GetName(Sections.SteamGameServer),
+			nameof(ServerName), 
+			"Schedule I Dedicated Server",
+			"Name of the server. This will be shown in the server list."
+		);
+		MaxPlayers = config.Bind(
+			GetName(Sections.SteamGameServer),
+			nameof(MaxPlayers), 
+			32,
+			"Maximum number of players allowed on the server."
+		);
+		
 		logger.LogInfo("✅ Config loaded!");
 	}
 	
@@ -89,5 +111,6 @@ internal class ScheduledConfig
 internal enum Sections
 {
 	Discord,
-	Tweaks
+	Tweaks,
+	SteamGameServer
 }

@@ -11,8 +11,11 @@ using HarmonyLib;
 using Scheduled.Managers;
 using Scheduled.Test;
 using ScheduleOne;
+using ScheduleOne.DevUtilities;
 using ScheduleOne.Persistence;
+using ScheduleOne.PlayerScripts;
 using ScheduleOne.Product.Packaging;
+using ScheduleOne.UI.MainMenu;
 using Steamworks;
 using UnityEngine;
 using UnityEngine.SceneManagement;
@@ -38,9 +41,11 @@ public class Plugin : BaseUnityPlugin
 	
 	// Steamworks
 	internal static SteamworksManager SteamworksManager;
+	internal static GameServerManager? GSManager;
+	internal static AppId_t AppId = new(3164500);
 	
 	// Network Prefabs
-	// private PrefabObjects NetworkedPrefabs;
+	private PrefabObjects NetworkedPrefabs;
 	
 	internal static Activity DEFAULT_ACTIVITY = new()
 	{
@@ -66,6 +71,7 @@ public class Plugin : BaseUnityPlugin
 		if(Config.InteractWithDiscord.Value)
 			DiscordManager = new DiscordManager();
 		SteamworksManager = new SteamworksManager();
+		StartCoroutine(OnSteamInit());
 		
 		// scene change stuff
 		SceneManager.activeSceneChanged += (_, to) =>
@@ -82,71 +88,64 @@ public class Plugin : BaseUnityPlugin
 	}
 	private void Start()
 	{
-		StartCoroutine(OnSteamInit());
-		
 		DiscordManager?.UpdateActivity(DEFAULT_ACTIVITY);
-		DiscordManager?.ActivityManager.RegisterSteam(3164500);
+		DiscordManager?.ActivityManager.RegisterSteam(AppId.m_AppId);
 		
-		// NetworkedPrefabs = InstanceFinder.NetworkManager.GetPrefabObjects<SinglePrefabObjects>(1337, createIfMissing: true);
-		// if (NetworkedPrefabs != null)
-		// {
-		// 	RegisterNetworkObject("VoiceChatManager");
-		// }
-		// else Logger.LogError("Networked Prefabs not found!");
-		//
-		// var mainMenuRig = FindObjectOfType<MainMenuRig>();
-		// if (mainMenuRig == null) return;
-		//
-		// var cubey = AssetManager.GetAsset<GameObject>("Prefab_AnimBox");
-		// if (cubey != null) Instantiate(cubey, mainMenuRig.Avatar.MiddleSpine);
-		// else Logger.LogError("Cubey prefab not found!");
+		NetworkedPrefabs = InstanceFinder.NetworkManager.GetPrefabObjects<SinglePrefabObjects>(1337, createIfMissing: true);
+		if (NetworkedPrefabs != null)
+		{
+			RegisterNetworkObject("VoiceChatManager");
+		}
+		else Logger.LogError("Networked Prefabs not found!");
 
-		// if (!Registry.InstanceExists) return;
-		// var registry = Registry.Instance;
-		// var boxPackagingDef = AssetManager.GetAsset<PackagingDefinition>("CoolJar");
-		// if (boxPackagingDef == null)
-		// {
-		// 	Logger.LogError("Box packaging definition not found!");
-		// 	return;
-		// }
-		//
-		// registry.AddToRegistry(boxPackagingDef);
+		if (!Config.DedicatedServerMode.Value) return;
+		if (string.IsNullOrEmpty(Config.ServerLoginToken.Value))
+		{
+			if(!MainMenuPopup.InstanceExists) return;
+			MainMenuPopup.Instance.Open("Error", "You need to supply a Steam Game Server Login Token. Check the config for a link to the URL!", true);
+		}
+		GSManager = new GameServerManager();
 	}
 
 	private void Update()
 	{
 		Discord?.RunCallbacks();
+		
+		if ((GSManager?.IsInit).GetValueOrDefault(false))
+		{
+			GameServer.RunCallbacks();
+		}
 	}
 
-	// private void RegisterNetworkObject(string assetName)
-	// {
-	// 	if (NetworkedPrefabs == null)
-	// 	{
-	// 		Logger.LogError("NetworkedPrefabs is null!");
-	// 		return;
-	// 	}
-	// 	
-	// 	var go = AssetManager.GetAsset<GameObject>(assetName);
-	// 	if (go == null)
-	// 	{
-	// 		Logger.LogError($"Prefab {assetName} not found!");
-	// 		return;
-	// 	}
-	// 	
-	// 	var no = go.GetComponent<NetworkObject>();
-	// 	if (no == null)
-	// 	{
-	// 		Logger.LogError($"Prefab {assetName} does not have a NetworkObject component!");
-	// 		return;
-	// 	}
-	// 	NetworkedPrefabs.AddObject(no, checkForDuplicates: true);
-	// }
+	private void RegisterNetworkObject(string assetName)
+	{
+		if (NetworkedPrefabs == null)
+		{
+			Logger.LogError("NetworkedPrefabs is null!");
+			return;
+		}
+		
+		var go = AssetManager.GetAsset<GameObject>(assetName);
+		if (go == null)
+		{
+			Logger.LogError($"Prefab {assetName} not found!");
+			return;
+		}
+		
+		var no = go.GetComponent<NetworkObject>();
+		if (no == null)
+		{
+			Logger.LogError($"Prefab {assetName} does not have a NetworkObject component!");
+			return;
+		}
+		NetworkedPrefabs.AddObject(no, checkForDuplicates: true);
+	}
 
 	private void OnApplicationQuit() => SteamAPI.Shutdown();
 	
 	private IEnumerator OnSteamInit()
 	{
-		while (!SteamManager.Initialized) { yield return null; }
+		while (!SteamworksManager.IsInit) { yield return null; }
 		
 		Logger.LogInfo("Steamworks is initialized!");
 		SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Menus);
@@ -158,12 +157,12 @@ public class Plugin : BaseUnityPlugin
 				SteamTimeline.SetTimelineGameMode(ETimelineGameMode.k_ETimelineGameMode_Playing);
 				
 				var vcm = AssetManager.GetAsset<GameObject>("VoiceChatManager");
-				if (vcm != null && InstanceFinder.IsServer)
-				{
-					var vcmGo = Instantiate(vcm);
-					InstanceFinder.ServerManager.Spawn(vcmGo);
-					Logger.LogInfo("VoiceChatManager spawned!");
-				}
+				if (vcm == null || !InstanceFinder.IsServer) return;
+				
+				var vcmGo = Instantiate(vcm);
+				InstanceFinder.ServerManager.Spawn(vcmGo);
+				
+				Logger.LogInfo("VoiceChatManager spawned!");
 			});
 		}
 	}

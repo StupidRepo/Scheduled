@@ -7,3 +7,4 @@ riderModule.iml
 *.csproj.user
 *.DotSettings.user
 Test/
+.run/

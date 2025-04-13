@@ -3,7 +3,7 @@ using System.Text;
 using BepInEx.Logging;
 using Discord;
 using MonoMod.Utils;
-using ScheduleOne.UI;
+using ScheduleOne;
 using ScheduleOne.UI.MainMenu;
 using Steamworks;
 using LogLevel = Discord.LogLevel;
@@ -72,28 +72,7 @@ public class DiscordManager
 		};
 
 		if (Plugin.Config.AllowInvites.Value)
-		{
 			activity.Secrets = new ActivitySecrets { Join = lobbyId };
-
-			if (lobby.Owner == SteamUser.GetSteamID())
-			{
-				logger.LogWarning("Made lobby public!");
-				
-				if(MainMenuPopup.InstanceExists && Plugin.Config.ShowPublicWarning.Value)
-				{
-					MainMenuPopup.Instance.Open("Warning!",
-						"This lobby was made public to allow seamless Discord invite integration. " +
-						"To turn this off, please disable the 'Allow Invites' option in the 'Scheduled' config file." +
-						"\n\nThis warning will not show again.",
-						true
-					);
-					Plugin.Config.ShowPublicWarning.Value = false;
-				}
-					
-				SteamMatchmaking.SetLobbyType(lobby.Id, ELobbyType.k_ELobbyTypePublic);
-				SteamMatchmaking.SetLobbyJoinable(lobby.Id, true);
-			}
-		}
 
 		UpdateActivity(activity);
 	}

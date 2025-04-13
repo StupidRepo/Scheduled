@@ -12,6 +12,8 @@
             https://nuget.bepinex.dev/v3/index.json;
             https://nuget.samboy.dev/v3/index.json
         </RestoreAdditionalProjectSources>
+        <Configurations>Debug;Release;FishNetGen</Configurations>
+        <Platforms>AnyCPU</Platforms>
     </PropertyGroup>
 
     <ItemGroup>
@@ -26,11 +28,11 @@
         <PackageReference Include="BepInEx.Analyzers" Version="1.0.8" PrivateAssets="all" />
         <PackageReference Include="BepInEx.Core" Version="6.0.0-pre.1" />
         <PackageReference Include="BepInEx.Unity.Mono" Version="6.0.0-be.733" />
-        <PackageReference Include="UnityEngine.Modules" Version="2022.3.32" PrivateAssets="all"/>
+        <PackageReference Include="UnityEngine.Modules" Version="2022.3.32" PrivateAssets="all" />
         
         <!-- Fody-->
-        <PackageReference Include="Costura.Fody" Version="6.0.0" PrivateAssets="all"/>
-        <PackageReference Include="Fody" Version="6.9.2" PrivateAssets="all"/>
+        <PackageReference Include="Costura.Fody" Version="6.0.0" PrivateAssets="all" />
+        <PackageReference Include="Fody" Version="6.9.2" PrivateAssets="all" />
         
         <!-- MonoMod -->
         <PackageReference Include="MonoMod.Backports" Version="1.1.2" />
@@ -38,11 +40,12 @@
         <PackageReference Include="MonoMod.RuntimeDetour.HookGen" Version="22.7.31.1" />
     </ItemGroup>
     
-<!--    <ItemGroup>-->
-<!--        <EmbeddedResource Include="Assets/sigmabundle"/>-->
-<!--    </ItemGroup>-->
+    <ItemGroup>
+        <EmbeddedResource Include="Assets/sigmabundle"/>
+    </ItemGroup>
     
     <Target Name="CopyOutputFileToGame" AfterTargets="Build">
+        <Exec Command="&quot;$(MSBuildProjectDirectory)\Tools\FishNet.CodeGenerator.Cli.exe&quot; -i &quot;$(OutputPath)\$(AssemblyName).dll&quot; -a @(DepFolders->'&quot;%(Identity)&quot;', ' ')" Condition="'$(Configuration)' == 'FishNetGen'"/>
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(S1Dir)\BepInEx\plugins\" Retries="60"/>
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(UnityOutDir)" Retries="60"/>
     </Target>   
