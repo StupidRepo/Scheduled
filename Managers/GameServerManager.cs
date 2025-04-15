@@ -17,7 +17,7 @@ public class GameServerManager
 	
 	public GameServerManager()
 	{
-		if (!GameServer.Init(0, GAMEPLAY_PORT, QUERY_PORT, EServerMode.eServerModeNoAuthentication, Application.version))
+		if (!GameServer.Init(0, GAMEPLAY_PORT, QUERY_PORT, EServerMode.eServerModeAuthentication, Application.version))
 		{
 			logger.LogError("Game server failed to initialise.");
 			if(MainMenuPopup.InstanceExists)
@@ -33,9 +33,9 @@ public class GameServerManager
 		{
 			IsRunning = true;
 			
-			logger.LogWarning("Game server is now connected to Steam servers.");
+			logger.LogWarning($"Game server is now connected to Steam servers with a Steam ID of {SteamGameServer.GetSteamID().m_SteamID}!");
 			if (MainMenuPopup.InstanceExists)
-				MainMenuPopup.Instance.Open("Info", "Game server is now connected to Steam servers.", false);
+				MainMenuPopup.Instance.Open("Info", "The game server is now connected to Steam servers.", false);
 			
 			SteamGameServer.SetAdvertiseServerActive(true);
 			UpdateInfo();

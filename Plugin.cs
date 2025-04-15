@@ -141,8 +141,13 @@ public class Plugin : BaseUnityPlugin
 		NetworkedPrefabs.AddObject(no, checkForDuplicates: true);
 	}
 
-	private void OnApplicationQuit() => SteamAPI.Shutdown();
-	
+	private void OnApplicationQuit()
+	{
+		SteamAPI.Shutdown();
+		if((GSManager?.IsRunning).GetValueOrDefault(false))
+			GameServer.Shutdown();
+	}
+
 	private IEnumerator OnSteamInit()
 	{
 		while (!SteamworksManager.IsInit) { yield return null; }

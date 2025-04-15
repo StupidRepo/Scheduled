@@ -48,6 +48,6 @@
         <Exec Command="&quot;$(MSBuildProjectDirectory)\Tools\FishNet.CodeGenerator.Cli.exe&quot; -i &quot;$(OutputPath)\$(AssemblyName).dll&quot; -a @(DepFolders->'&quot;%(Identity)&quot;', ' ')" Condition="'$(Configuration)' == 'FishNetGen'"/>
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(S1Dir)\BepInEx\plugins\" Retries="60"/>
         <Copy SourceFiles="$(OutputPath)\$(AssemblyName).dll" DestinationFolder="$(UnityOutDir)" Retries="60"/>
-    </Target>   
+    </Target>
 
 </Project>
